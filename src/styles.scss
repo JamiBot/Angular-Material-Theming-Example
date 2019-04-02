@@ -1,0 +1,95 @@
+@import '~@angular/material/theming';
+@import './app/app.component.theme.scss';
+
+@include mat-core();
+
+@mixin global-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    background: mat-color($background, background);
+    color: mat-color($foreground, text);
+}
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$hacker-foreground: (
+  base:              #76FF03,
+  divider:           $light-dividers,
+  dividers:          $light-dividers,
+  disabled:          $light-disabled-text,
+  disabled-button:   rgba(#76FF03, 0.3),
+  disabled-text:     $light-disabled-text,
+  hint-text:         $light-disabled-text,
+  secondary-text:    #B2FF59,
+  icon:              #76FF03,
+  icons:             #76FF03,
+  text:              #76FF03,
+  slider-min:        #76FF03,
+  slider-off:        rgba(#76FF03, 0.3),
+  slider-off-active: rgba(#76FF03, 0.3),
+);
+
+// Background palette for dark themes.
+$hacker-background: (
+  status-bar: black,
+  app-bar:    map_get($mat-grey, 900),
+  background: black,
+  hover:      rgba(#76FF03, 0.04),
+  card:       map_get($mat-grey, 900),
+  dialog:     map_get($mat-grey, 900),
+  disabled-button: rgba(#76FF03, 0.12),
+  raised-button: map-get($mat-grey, 900),
+  focused-button: $light-focused,
+  selected-button: map_get($mat-grey, 900),
+  selected-disabled-button: map_get($mat-grey, 900),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($mat-grey, 800),
+  disabled-list-option: black,
+);
+
+@function mat-custom-theme($isDark, $primary, $accent, $warn, $fg, $bg) {
+    @return (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+      is-dark: $isDark,
+      foreground: $fg,
+      background: $bg,
+    );
+  }
+  
+@mixin components-theme($theme) {
+    @include app-component-theme($theme);
+    @include global-theme($theme);
+    @include angular-material-theme($theme);
+}
+
+$light-theme: mat-light-theme(mat-palette($mat-grey), mat-palette($mat-amber), mat-palette($mat-red));
+$dark-theme: mat-dark-theme(mat-palette($mat-indigo), mat-palette($mat-purple), mat-palette($mat-red));
+$hacker-theme: mat-custom-theme(true, mat-palette($mat-light-green, A400, A400, A400), mat-palette($mat-light-green, A400, A400, A400),
+    mat-palette($mat-red), $hacker-foreground, $hacker-background);
+
+.light-theme {
+    @include components-theme($light-theme);
+}
+
+.dark-theme {
+    @include components-theme($dark-theme);
+}
+
+.hacker-theme {
+    @include components-theme($hacker-theme);
+}
